@@ -8,6 +8,15 @@
 - [官方实现](http://spring.io/guides/gs/securing-web/)
 
 
+
+|-------------------------------------------------------------|
+|Username    |Password|Role                                   |
+|------------|--------|---------------------------------------|
+|system_admin|123456  |ROLE_USER,ROLE_ADMIN,ROLE_SYSTEM_ADMIN |
+|admin       |123456  |ROLE_USER,ROLE_ADMIN                   |
+|user        |123456  |ROLE_USER                              |
+
+
 表单登录、注销、后台管理、删除用户等。
 
 主要配置文件：WebSecurityConfiguration.java
