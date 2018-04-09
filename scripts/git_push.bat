@@ -6,7 +6,7 @@ cd %CURRENT_DIR%
 cd ..
 echo.正在添加文件...
 call git add .
-set remark="Initial~commit"
+set remark=Initial commit
 set /p remark=正在提交备注...，请填写备注（可空）:
 call git commit -m "%remark%"
 echo.正在开始提交代码...
