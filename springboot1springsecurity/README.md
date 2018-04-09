@@ -10,7 +10,6 @@
 |测试账号     |        |                                       |
 |:-----------|:-------|:--------------------------------------|
 |Username    |Password|Role & Authority                       |
-|:-----------|:------|:---------------------------------------|
 |system_admin|123456  |ROLE_USER,ROLE_ADMIN,ROLE_SYSTEM_ADMIN |
 |admin       |123456  |ROLE_USER,ROLE_ADMIN,/user/delete/{id} |
 |user        |123456  |ROLE_USER                              |
