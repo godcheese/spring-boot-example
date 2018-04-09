@@ -97,24 +97,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .sessionManagement()
-
-                // 限制单个用户最大session，只允许一个用户登录
-                .maximumSessions(1)
-
-
-                // session 过期后跳转到登录 url
-                .expiredUrl("/login")
-
-                .sessionRegistry(sessionRegistry)
-
-                .and()
-
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 
+                // 限制单个用户最大session，只允许一个用户登录
+//                .maximumSessions(1)
+
+                // session 过期后跳转到登录 url
+//                .expiredUrl("/login")
+
+                // 动态修改权限立即生效，未测试
+//                .sessionRegistry(sessionRegistry)
+
                 .and()
+//                .and()
 
-
-                // 无权限，访问指定 url
+                // 报错处理，访问指定 url
                 .exceptionHandling().accessDeniedPage("/403");
     }
 
