@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div th:replace="head(title='后台管理')"></div>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Demo</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}">首页</a></li>
+                <li><a href="#">测试1</a></li>
+                <li><a href="#">测试2</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" th:action="@{/logout}" method="post">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}" class="btn btn-primary">后台管理</a>
+                <input type="submit" class="btn btn-danger" value="注销">
+            </form>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <br/>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h2 class="sub-header">用户管理</h2>
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <!--<th>Password</th>-->
+                                <th>操作</th>
+                            </tr>
+                            <tr th:each="userEntity : ${userEntityList}">
+                                <td th:text="${userEntity.getId()}"></td>
+                                <td th:text="${userEntity.getUsername()}"></td>
+                                <!--<td th:text="${userEntity.getPassword()}"></td>-->
+                                <td>
+                                    <form sec:authorize-expr="hasRole('SYSTEM_ADMIN') OR hasAuthority('/user/delete/{id}')" method="post" th:action="'/user/delete/'+${userEntity.getId()}">
+                                        <input type="submit" class="btn btn-sm btn-danger" value="删除">
+                                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

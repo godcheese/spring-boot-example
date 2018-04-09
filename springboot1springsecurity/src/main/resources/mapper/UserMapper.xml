@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gioov.springboot1springsecurity.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.gioov.springboot1springsecurity.mapper.entity.UserEntity">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="TableName">
+        `user`
+    </sql>
+
+    <sql id="BaseColumnList">
+        `id`, `username`, `password`
+    </sql>
+
+    <select id="listAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumnList" />
+        FROM <include refid="TableName"/>
+    </select>
+
+    <select id="getByUsername" resultMap="BaseResultMap" parameterType="string">
+        SELECT
+        <include refid="BaseColumnList" />
+        FROM <include refid="TableName"/> WHERE `username` = #{username}
+    </select>
+
+    <select id="getOne" resultMap="BaseResultMap" parameterType="long">
+        SELECT
+        <include refid="BaseColumnList" />
+        FROM <include refid="TableName"/> WHERE `id` = #{id}
+    </select>
+
+    <select id="deleteOne" resultMap="BaseResultMap" parameterType="long">
+        DELETE FROM <include refid="TableName"/> WHERE `id` = #{id}
+    </select>
+
+</mapper>

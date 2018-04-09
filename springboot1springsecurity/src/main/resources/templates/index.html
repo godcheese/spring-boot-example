@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="head(title='首页')"></div>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Demo</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}">首页</a></li>
+                <li><a href="#">测试1</a></li>
+                <li><a href="#">测试2</a></li>
+            </ul>
+            <div class="navbar-form navbar-right">
+                <a th:href="@{/login}" class="btn btn-primary">登录</a>
+                <a href="#" class="btn btn-danger">注册</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <br/>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+                <div class="alert alert-success" role="alert">
+                    Spring Boot 1.x 整合 Spring Security 例子
+                </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
