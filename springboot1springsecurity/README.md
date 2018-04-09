@@ -1,11 +1,22 @@
 
 # [springboot1springsecurity](https://github.com/godcheese/springboot-example/tree/master/springboot1springsecurity)
 > Spring Boot 1.x 整合 Spring Security 实现角色/权限控制实例
-- Spring Boot 版本：1.5.11.RELEASE
-- Java 版本：1.8 
-- MySQL 版本：5.7
 
 - [官方实现](http://spring.io/guides/gs/securing-web/)
+
+|环境  |版本|
+|:-----|---|
+|Java  |1.8|
+|MySQL |5.7|
+|Maven |3.5|
+|Tomcat|8.5|
+
+|依赖            |  版本        |
+|:------------- |:-------------|
+|Spring Boot    |1.5.11.RELEASE|
+|Spring Security|4.2.5.RELEASE | 
+|MyBatis        |3.4.6         |
+|Thymeleaf      |2.1.6.RELEASE |
 
 |测试账号     |        |                                       |
 |:-----------|:-------|:--------------------------------------|
