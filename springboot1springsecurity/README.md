@@ -5,9 +5,9 @@
 - Java 版本：1.8 
 - MySQL 版本：5.7
 
+表单登录、注销、后台管理、删除用户等。
 
-主要配置文件
-``` WebSecurityConfiguration.java ```
+主要配置文件：WebSecurityConfiguration.java
 ```
 package com.gioov.springboot1springsecurity.config;
 
