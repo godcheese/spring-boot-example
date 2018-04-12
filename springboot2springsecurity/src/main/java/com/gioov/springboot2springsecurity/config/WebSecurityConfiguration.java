@@ -1,4 +1,4 @@
-package com.gioov.springboot1springsecurity.config;
+package com.gioov.springboot2springsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

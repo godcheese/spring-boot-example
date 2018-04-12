@@ -1,4 +1,36 @@
-package com.gioov.springboot1springsecurity.config;
+
+# [springboot2springsecurity](https://github.com/godcheese/springboot-example/tree/master/springboot2springsecurity)
+> Spring Boot 2.x 整合 Spring Security 实现角色/权限控制实例
+
+- [官方实现](http://spring.io/guides/gs/securing-web/)
+
+|环境  |版本|
+|:-----|---|
+|Java  |1.8|
+|MySQL |5.7|
+|Maven |3.5|
+|Tomcat|8.5|
+
+|依赖            |  版本        |
+|:------------- |:-------------|
+|Spring Boot    |2.0.1.RELEASE|
+|Spring Security|5.0.4.RELEASE |
+|MyBatis        |3.4.6         |
+|Thymeleaf      |3.0.9.RELEASE |
+
+|测试账号     |        |                                       |
+|:-----------|:-------|:--------------------------------------|
+|Username    |Password|Role & Authority                       |
+|system_admin|123456  |ROLE_USER,ROLE_ADMIN,ROLE_SYSTEM_ADMIN |
+|admin       |123456  |ROLE_USER,ROLE_ADMIN,/user/delete/{id} |
+|user        |123456  |ROLE_USER                              |
+
+
+表单登录、注销、后台管理、删除用户等。
+
+主要配置文件：WebSecurityConfiguration.java
+```
+package com.gioov.springboot2springsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,15 +79,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                   // 禁用 csrf
 //                .csrf().disable()
 
-                // 禁用 ROLE_ANONYMOUS 角色
-//                .anonymous().disable()
-
                 .authorizeRequests()
 
-                // 静态资源 url ，无需登录认证权限
+                // 匹配url，无需登录认证权限
                 .antMatchers("/css/**","/js/**","img/**","/vendor/**").permitAll()
 
-                // 指定 url ，无需登录认证权限
                 .antMatchers("/","/index").permitAll()
 
                 // 其它请求均需要认证
@@ -101,23 +129,34 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 
                 // 限制单个用户最大session，只允许一个用户登录
-//                .maximumSessions(1)
+                .maximumSessions(1)
+
 
                 // session 过期后跳转到登录 url
-//                .expiredUrl("/login")
+                .expiredUrl("/login")
 
-                // 动态修改权限立即生效，未测试
-//                .sessionRegistry(sessionRegistry)
+                .sessionRegistry(sessionRegistry)
 
                 .and()
-//                .and()
 
-                // 报错处理，访问指定 url
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+
+                .and()
+
+
+                // 无权限，访问指定 url
                 .exceptionHandling().accessDeniedPage("/403");
     }
 
 
 }
+
+```
+
+## Screenshots
+![springboot1springsecurity_1.png](https://raw.githubusercontent.com/godcheese/springboot-example/master/springboot1springsecurity/screenshots/springboot1springsecurity_1.png)
+![springboot1springsecurity_2.png](https://raw.githubusercontent.com/godcheese/springboot-example/master/springboot1springsecurity/screenshots/springboot1springsecurity_2.png)
+![springboot1springsecurity_3.png](https://raw.githubusercontent.com/godcheese/springboot-example/master/springboot1springsecurity/screenshots/springboot1springsecurity_3.png)
+![springboot1springsecurity_4.png](https://raw.githubusercontent.com/godcheese/springboot-example/master/springboot1springsecurity/screenshots/springboot1springsecurity_4.png)
