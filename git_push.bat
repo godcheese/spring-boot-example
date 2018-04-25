@@ -1,7 +1,7 @@
 CHCP 65001
 @echo off
 echo.author godcheese [godcheese@outlook.com]
-set "CURRENT_DIR=%~dp0"
+set "CURRENT_DIR=%cd%"
 cd %CURRENT_DIR%
 echo.开始添加文件...
 call git add .

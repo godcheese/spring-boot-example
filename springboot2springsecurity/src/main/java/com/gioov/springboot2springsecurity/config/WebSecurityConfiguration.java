@@ -1,6 +1,7 @@
 package com.gioov.springboot2springsecurity.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -30,21 +32,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new SessionRegistryImpl();
     }
 
-    @Bean
-    public SimpleUserDetailsService simpleUserDetailsService(){
-        return new SimpleUserDetailsService();
-    }
+    @Autowired
+    @Qualifier("simpleUserDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(simpleUserDetailsService()).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                  // 禁用 csrf
+                // 禁用 csrf
 //                .csrf().disable()
 
                 // 禁用 ROLE_ANONYMOUS 角色
@@ -58,10 +59,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 指定 url ，无需登录认证权限
                 .antMatchers("/","/index").permitAll()
 
-                // 其它请求均需要认证
+                // 其它请求均需要认证 与 .antMatchers("/**").authenticated() 等效
                 .anyRequest().authenticated()
-
-//                .antMatchers("/**").authenticated()
 
                 .and()
 
