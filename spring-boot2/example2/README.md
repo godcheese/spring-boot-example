@@ -1,6 +1,6 @@
 # example2
 
-- Spring Security 实现角色/权限控制实例。
+> Spring Security 实现身份验证和访问控制实例实例
 
 - [官方实现](http://spring.io/guides/gs/securing-web/)
 
@@ -12,6 +12,24 @@
 |user        |123456  |ROLE_USER                              |
 
 表单登录、注销、后台管理、删除用户等。
+
+## 技术栈
+
+- Thymeleaf
+
+  - 模板渲染 Web 页面
+
+- Spring Security
+
+  - 支持身份验证和访问控制的框架
+
+- MyBatis
+
+  - 持久层
+
+- MySQL
+
+  - 数据库
 
 ## Screenshots
 ![1.png](https://raw.githubusercontent.com/godcheese/spring-boot-example/master/spring-boot2/example2/screenshots/1.png)
