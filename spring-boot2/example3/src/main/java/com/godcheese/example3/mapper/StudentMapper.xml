@@ -1,55 +1,56 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.godcheese.example3.mapper.StudentMapper">
     <resultMap id="BaseResultMap" type="com.godcheese.example3.entity.StudentEntity">
-        <id column="id" property="id" jdbcType="BIGINT"/> <!-- id -->
-        <result column="name" property="name" jdbcType="VARCHAR"/> <!-- 姓名 -->
-        <result column="gender" property="gender" jdbcType="INTEGER"/> <!-- 性别 -->
-        <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/> <!-- 出生日期 -->
-        <result column="study_number" property="studyNumber" jdbcType="VARCHAR"/> <!-- 学号 -->
-        <result column="grade_id" property="gradeId" jdbcType="BIGINT"/> <!-- 年级 id -->
-        <result column="class_id" property="classId" jdbcType="BIGINT"/> <!-- 班级 id -->
-        <result column="profile" property="profile" jdbcType="LONGVARCHAR"/> <!-- 简介 -->
-        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/> <!-- 备注 -->
-        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/> <!-- 更新时间 -->
-        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/> <!-- 创建时间 -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="INTEGER"/>
+        <result column="birthday" property="birthday" jdbcType="DATE"/>
+        <result column="study_number" property="studyNumber" jdbcType="VARCHAR"/>
+        <result column="class_id" property="classId" jdbcType="BIGINT"/>
+        <result column="profile" property="profile" jdbcType="LONGVARCHAR"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="TableName">
-        `student`
+        student
     </sql>
-
     <sql id="BaseColumnList">
-        `id`, `name`, `gender`, `birthday`, `study_number`, `grade_id`, `class_id`, `profile`, `gmt_modified`, `gmt_created`
+     id, `name`, gender, birthday, study_number, class_id, profile, remark, gmt_modified,
+    gmt_created
     </sql>
 
-    <insert id="insertOne" useGeneratedKeys="true" keyProperty="id"
+    <insert id="insertOne" keyColumn="id" keyProperty="id" useGeneratedKeys="true"
             parameterType="com.godcheese.example3.entity.StudentEntity">
         insert into
         <include refid="TableName"/>
-        ( `user_id`,`name`, `size`, `pretty_size`, `mime_type`, `path`, `guid`, `remark`, `gmt_modified`, `gmt_created`)
-        values (#{userId}, #{name}, #{size}, #{prettySize}, #{mimeType}, #{path}, #{guid}, #{remark}, #{gmtCreated},
-        #{gmtModified})
+        (`name`, grade_id)
+        values (#{name}, #{gradeId})
     </insert>
 
-    <insert id="insertAll">
+    <insert id="insertAll" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="list">
         insert into
         <include refid="TableName"/>
-        ( `user_id`,`name`, `size`, `pretty_size`, `mime_type`, `path`, `guid`, `remark`, `gmt_modified`, `gmt_created`)
-        values (#{userId}, #{name}, #{size}, #{prettySize}, #{mimeType}, #{path}, #{guid}, #{remark}, #{gmtCreated},
-        #{gmtModified})
+        (`name`, grade_id)
+        values (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.name}, #{item.gradeId}
+        </foreach>
+        )
     </insert>
 
     <delete id="deleteOne" parameterType="long">
         delete from
         <include refid="TableName"/>
-        where `id` = #{id}
+        where id = #{id}
     </delete>
 
-    <delete id="deleteAll">
+    <delete id="deleteAll" parameterType="list">
         delete from
         <include refid="TableName"/>
-        where `id` in
+        where id in
         (
         <foreach collection="list" item="item" index="index" separator=",">
             #{item}
@@ -57,74 +58,191 @@
         )
     </delete>
 
-    <update id="updateOne" keyProperty="id" parameterType="com.godcheese.example3.entity.StudentEntity">
+    <update id="updateOne" parameterType="com.godcheese.example3.entity.StudentEntity">
         update
         <include refid="TableName"/>
-        set `name` = #{name}, `size` = #{size}, `pretty_size` = #{prettySize}, `mime_type` = #{mimeType}, `path` =
-        #{path}, `guid` = #{guid}, `remark` = #{remark}, `gmt_created` = #{gmtCreated}, `gmt_modified` = #{gmtModified}
-        where `id`= #{id}
+        set `name` = #{name}, gender = #{gender}, birthday = #{birthday}, study_number = #{studyNumber}, class_id =
+        #{classId}, profile = #{profile}, remark = #{remark}, gmt_modified = #{gmtModified}, gmt_created = #{gmtCreated}
+        where id = #{id}
     </update>
 
-    <select id="selectOne" resultMap="BaseResultMap">
+    <update id="updateAll" parameterType="com.godcheese.example3.entity.StudentEntity">
+        update
+        <include refid="TableName"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="t_name = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.name != null">
+                        when id = #{item.id} then #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_gender = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.gender != null">
+                        when id=#{item.id} then #{item.gender}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_birthday = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.birthday != null">
+                        when id=#{item.id} then #{item.birthday}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_study_number = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.studyNumber != null">
+                        when id=#{item.id} then #{item.studyNumber}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_class_id = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.classId != null">
+                        when id=#{item.id} then #{item.classId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_profile = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.profile != null">
+                        when id=#{item.id} then #{item.profile}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_remark = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.remark != null">
+                        when id=#{item.id} then #{item.remark}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_gmt_modified= case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.gmtModified != null">
+                        when id=#{item.id} then #{item.gmtModified}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_gmt_created = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.gmtCreated != null">
+                        when id=#{item.id} then #{item.gmtCreated}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id = #{item.id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="selectOne" parameterType="long" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList"/>
         from
         <include refid="TableName"/>
-        where `id` = #{id} limit 1
+        where id = #{id}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" parameterType="list" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList"/>
         from
         <include refid="TableName"/>
-        where `id` = #{id} limit 1
+        where id in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
     </select>
 
-    <select id="listAll" resultMap="BaseResultMap">
+    <select id="pageAll" parameterType="long" resultMap="BaseResultMap" resultType="com.github.pagehelper.Page">
         select
         <include refid="BaseColumnList"/>
         from
         <include refid="TableName"/>
+        where id in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
     </select>
 
-    <select id="pageAll" resultMap="BaseResultMap" parameterType="com.github.pagehelper.Page">
+    <select id="search" parameterType="com.godcheese.example3.entity.StudentEntity" resultMap="BaseResultMap">
         select
         <include refid="BaseColumnList"/>
         from
         <include refid="TableName"/>
+        where 1 = 1
+        <if test="name != null and name != ''">
+            and where `name` like concat('%', #{name}, '%')
+        </if>
+        <if test="gender != null and gender != ''">
+            and where gender like concat('%', #{gender}, '%')
+        </if>
+        <if test="birthday != null and gender != ''">
+            and where birthday like concat('%', #{birthday}, '%')
+        </if>
+        <if test="studyNumber != null and studyNumber != ''">
+            and where study_number like concat('%', #{studyNumber}, '%')
+        </if>
+        <if test="classId != null and classId != ''">
+            and where class_id like concat('%', #{classId}, '%')
+        </if>
+        <if test="profile != null and profile != ''">
+            and where profile like concat('%', #{profile}, '%')
+        </if>
+        <if test="remark != null and remark != ''">
+            and where remark like concat('%', #{remark}, '%')
+        </if>
+        <if test="gmtModified != null and gmtModified != ''">
+            and where gmt_modified like concat('%', #{gmtModified}, '%')
+        </if>
+        <if test="gmtCreated != null and gmtCreated != ''">
+            and where gmt_created like concat('%', #{gmtCreated}, '%')
+        </if>
     </select>
 
-    <select id="pageAllByUserId" resultMap="BaseResultMap" parameterType="com.github.pagehelper.Page">
+    <select id="pageSearch" parameterType="com.godcheese.example3.entity.StudentEntity" resultMap="BaseResultMap"
+            resultType="com.github.pagehelper.Page">
         select
         <include refid="BaseColumnList"/>
         from
         <include refid="TableName"/>
-        where `user_id` = #{userId}
+        where 1 = 1
+        <if test="name != null and name != ''">
+            and where `name` like concat('%', #{name}, '%')
+        </if>
+        <if test="gender != null and gender != ''">
+            and where gender like concat('%', #{gender}, '%')
+        </if>
+        <if test="birthday != null and gender != ''">
+            and where birthday like concat('%', #{birthday}, '%')
+        </if>
+        <if test="studyNumber != null and studyNumber != ''">
+            and where study_number like concat('%', #{studyNumber}, '%')
+        </if>
+        <if test="classId != null and classId != ''">
+            and where class_id like concat('%', #{classId}, '%')
+        </if>
+        <if test="profile != null and profile != ''">
+            and where profile like concat('%', #{profile}, '%')
+        </if>
+        <if test="remark != null and remark != ''">
+            and where remark like concat('%', #{remark}, '%')
+        </if>
+        <if test="gmtModified != null and gmtModified != ''">
+            and where gmt_modified like concat('%', #{gmtModified}, '%')
+        </if>
+        <if test="gmtCreated != null and gmtCreated != ''">
+            and where gmt_created like concat('%', #{gmtCreated}, '%')
+        </if>
     </select>
-
-    <select id="pageAllImage" resultMap="BaseResultMap" parameterType="com.github.pagehelper.Page">
-        select
-        <include refid="BaseColumnList"/>
-        from
-        <include refid="TableName"/>
-        where `mime_type` like 'image%'
-    </select>
-
-    <select id="pageAllImageByUserId" resultMap="BaseResultMap" parameterType="com.github.pagehelper.Page">
-        select
-        <include refid="BaseColumnList"/>
-        from
-        <include refid="TableName"/>
-        where `mime_type` like 'image%' and `user_id` = #{userId}
-    </select>
-
-    <select id="getOneByGuid" resultMap="BaseResultMap">
-        select
-        <include refid="BaseColumnList"/>
-        from
-        <include refid="TableName"/>
-        where `guid` = #{guid} limit 1
-    </select>
-
 </mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.godcheese.example3.mapper.ClassMapper">
+    <resultMap id="BaseResultMap" type="com.godcheese.example3.entity.ClassEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="grade_id" property="gradeId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="TableName">
+        class
+    </sql>
+    <sql id="BaseColumnList">
+    id, `name`, grade_id
+    </sql>
+
+    <insert id="insertOne" keyColumn="id" keyProperty="id" useGeneratedKeys="true"
+            parameterType="com.godcheese.example3.entity.ClassEntity">
+        insert into
+        <include refid="TableName"/>
+        (`name`, grade_id)
+        values (#{name}, #{gradeId})
+    </insert>
+
+    <insert id="insertAll" keyColumn="id" keyProperty="id" useGeneratedKeys="true" parameterType="list">
+        insert into
+        <include refid="TableName"/>
+        (`name`, grade_id)
+        values (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item.name}, #{item.gradeId}
+        </foreach>
+        )
+    </insert>
+
+    <delete id="deleteOne" parameterType="long">
+        delete from
+        <include refid="TableName"/>
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteAll" parameterType="list">
+        delete from
+        <include refid="TableName"/>
+        where id in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+    <update id="updateOne" parameterType="com.godcheese.example3.entity.ClassEntity">
+        update
+        <include refid="TableName"/>
+        set `name` = #{name}, grade_id = #{gradeId}
+        where id = #{id}
+    </update>
+
+    <update id="updateAll" parameterType="com.godcheese.example3.entity.ClassEntity">
+        update
+        <include refid="TableName"/>
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="t_name = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.name != null">
+                        when id = #{item.id} then #{item.name}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="t_gradeId = case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.gradeId != null">
+                        when id=#{item.id} then #{item.gradeId}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        <where>
+            <foreach collection="list" separator="or" item="item">
+                id = #{item.id}
+            </foreach>
+        </where>
+    </update>
+
+    <select id="selectOne" parameterType="long" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        <include refid="TableName"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectAll" parameterType="list" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        <include refid="TableName"/>
+        where id in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="pageAll" parameterType="long" resultMap="BaseResultMap" resultType="com.github.pagehelper.Page">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        <include refid="TableName"/>
+        where id in
+        (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="search" parameterType="com.godcheese.example3.entity.ClassEntity" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        <include refid="TableName"/>
+        where 1 = 1
+        <if test="name != null and name != ''">
+            and where `name` like concat('%', #{name}, '%')
+        </if>
+        <if test="gradeId != null and gradeId != ''">
+            and where `grade_id` like concat('%', #{gradeId}, '%')
+        </if>
+    </select>
+
+    <select id="pageSearch" parameterType="com.godcheese.example3.entity.ClassEntity" resultMap="BaseResultMap"
+            resultType="com.github.pagehelper.Page">
+        select
+        <include refid="BaseColumnList"/>
+        from
+        <include refid="TableName"/>
+        where 1 = 1
+        <if test="name != null and name != ''">
+            and where `name` like concat('%', #{name}, '%')
+        </if>
+        <if test="gradeId != null and gradeId != ''">
+            and where `grade_id` like concat('%', #{gradeId}, '%')
+        </if>
+    </select>
+</mapper>
