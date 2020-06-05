@@ -1,37 +1,17 @@
 package com.godcheese.example3.mapper;
 
-import com.github.pagehelper.Page;
 import com.godcheese.example3.entity.StudentEntity;
-import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
-/**
- * @author godcheese [godcheese@outlook.com]
- * @date 2020-06-04
- */
-@Mapper
 public interface StudentMapper {
+    int deleteByPrimaryKey(Long id);
 
-    int insertOne(StudentEntity studentEntity);
+    int insert(StudentEntity record);
 
-    int insertAll(List<StudentEntity> studentEntityList);
+    int insertSelective(StudentEntity record);
 
-    int deleteOne(Long id);
+    StudentEntity selectByPrimaryKey(Long id);
 
-    int deleteAll(List<Long> idList);
+    int updateByPrimaryKeySelective(StudentEntity record);
 
-    int updateOne(StudentEntity studentEntity);
-
-    int updateAll(List<StudentEntity> studentEntityList);
-
-    StudentEntity selectOne(Long id);
-
-    List<StudentEntity> selectAll(List<Long> idList);
-
-    List<StudentEntity> search(StudentEntity studentEntity);
-
-    Page<StudentEntity> pageAll(StudentEntity studentEntity);
-
-    Page<StudentEntity> pageSearch(StudentEntity studentEntity);
+    int updateByPrimaryKey(StudentEntity record);
 }

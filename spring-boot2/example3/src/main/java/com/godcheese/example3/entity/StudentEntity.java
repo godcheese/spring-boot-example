@@ -13,24 +13,49 @@ public class StudentEntity implements Serializable {
 
     private Long id;
 
+    /**
+     * 姓名
+     */
     private String name;
 
+    /**
+     * 性别
+     */
     private Integer gender;
 
+    /**
+     * 出生日期
+     */
     private Date birthday;
 
+    /**
+     * 学号
+     */
     private String studyNumber;
 
-    private Long gradeId;
-
+    /**
+     * 班级 id
+     */
     private Long classId;
 
+    /**
+     * 简介
+     */
     private String profile;
 
+    /**
+     * 备注
+     */
     private String remark;
 
+    /**
+     * 更新时间
+     */
     private Date gmtModified;
 
+    /**
+     * 创建时间
+     */
     private Date gmtCreated;
 
     public Long getId() {
@@ -71,14 +96,6 @@ public class StudentEntity implements Serializable {
 
     public void setStudyNumber(String studyNumber) {
         this.studyNumber = studyNumber;
-    }
-
-    public Long getGradeId() {
-        return gradeId;
-    }
-
-    public void setGradeId(Long gradeId) {
-        this.gradeId = gradeId;
     }
 
     public Long getClassId() {

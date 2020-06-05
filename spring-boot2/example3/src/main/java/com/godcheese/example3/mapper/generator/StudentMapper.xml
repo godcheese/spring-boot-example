@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.godcheese.example3.mapper.StudentMapper">
+    <resultMap id="BaseResultMap" type="com.godcheese.example3.entity.StudentEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="BOOLEAN"/>
+        <result column="birthday" property="birthday" jdbcType="TIMESTAMP"/>
+        <result column="study_number" property="studyNumber" jdbcType="VARCHAR"/>
+        <result column="class_id" property="classId" jdbcType="BIGINT"/>
+        <result column="profile" property="profile" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `name`, gender, birthday, study_number, class_id, profile, remark, gmt_modified,
+    gmt_created
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from student
+        where id = #{id
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from student
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.godcheese.example3.entity.Student"
+            useGeneratedKeys="true">
+        insert into student (`name`, gender, birthday,
+                             study_number, class_id, profile,
+                             remark, gmt_modified, gmt_created)
+        values (#{name,jdbcType=VARCHAR}, #{gender,jdbcType=BOOLEAN}, #{birthday,jdbcType=TIMESTAMP},
+                #{studyNumber,jdbcType=VARCHAR}, #{classId,jdbcType=BIGINT}, #{profile,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR}, #{gmtModified,jdbcType=TIMESTAMP}, #{gmtCreated,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.godcheese.example3.entity.Student"
+            useGeneratedKeys="true">
+        insert into student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="studyNumber != null">
+                study_number,
+            </if>
+            <if test="classId != null">
+                class_id,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="gmtCreated != null">
+                gmt_created,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BOOLEAN},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="studyNumber != null">
+                #{studyNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="classId != null">
+                #{classId,jdbcType=BIGINT},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtCreated != null">
+                #{gmtCreated,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.godcheese.example3.entity.Student">
+        update student
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BOOLEAN},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="studyNumber != null">
+                study_number = #{studyNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="classId != null">
+                class_id = #{classId,jdbcType=BIGINT},
+            </if>
+            <if test="profile != null">
+                profile = #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtCreated != null">
+                gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.godcheese.example3.entity.Student">
+        update student
+        set `name`       = #{name,jdbcType=VARCHAR},
+            gender       = #{gender,jdbcType=BOOLEAN},
+            birthday     = #{birthday,jdbcType=TIMESTAMP},
+            study_number = #{studyNumber,jdbcType=VARCHAR},
+            class_id     = #{classId,jdbcType=BIGINT},
+            profile      = #{profile,jdbcType=VARCHAR},
+            remark       = #{remark,jdbcType=VARCHAR},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            gmt_created  = #{gmtCreated,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>
